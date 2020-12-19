@@ -7,7 +7,7 @@ from sklearn import decomposition
 from sklearn.model_selection import train_test_split
 import os
 
-df = pd.read_excel('C:/Users/Guillem/Desktop/HACKATHON 2020/Unlabeled audio/TRAIN/features_extracted.xlsx')
+df = pd.read_excel('C:/Users/Ian/Desktop/parlescatala/Roldo/Unlabeled audio/TRAIN/features_extracted.xlsx')
 mid_feature_names = df.columns.values[0:-2]
 data = df.to_numpy()
 features = data[:, 0:-2]
@@ -198,6 +198,6 @@ Train a classifier with PyAudioAnalysis
 from pyAudioAnalysis import audioTrainTest as aT
 help(aT.extract_features_and_train)
 
-cough_path = 'C:/Users/Guillem/Desktop/HACKATHON 2020/Unlabeled audio/TRAIN/Cough/'
-nocough_path = 'C:/Users/Guillem/Desktop/HACKATHON 2020/Unlabeled audio/TRAIN/No_Cough/'
+cough_path = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Unlabeled audio/TRAIN/Cough/'
+nocough_path = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Unlabeled audio/TRAIN/No_Cough/'
 svm_linear = aT.extract_features_and_train([cough_path,nocough_path], 0.2, 0.2, aT.shortTermWindow, aT.shortTermStep, "svm", "svm_linear", False, train_percentage=0.80)
