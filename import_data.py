@@ -11,7 +11,7 @@ import os
 import shutil
 import numpy as np
 
-basepath = 'C:/Users/Guillem/Desktop/HACKATHON 2020/'
+basepath = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/'
 unlabeled_path = basepath + 'Unlabeled audio/'
 
 # Check all directories of Unlabeled data
