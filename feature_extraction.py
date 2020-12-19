@@ -9,8 +9,10 @@ import numpy as np
 import pandas as pd
 import os
 
+
 basepath_train_cough = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Unlabeled audio/TRAIN/Cough/'
 basepath_train_nocough = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Unlabeled audio/TRAIN/No_Cough/'
+
 
 [mid_term_features_cough, wav_file_list_cough, mid_feature_names] =  mF.directory_feature_extraction(basepath_train_cough, 0.1,0.1, 0.01, 0.01, compute_beat=False)
 [mid_term_features_nocough, wav_file_list_nocough, mid_feature_names] =  mF.directory_feature_extraction(basepath_train_nocough, 0.1,0.1, 0.01, 0.01, compute_beat=False)
@@ -36,9 +38,11 @@ df = pd.DataFrame(features, columns = mid_feature_names)
 df['Label'] = pd.Series(labels)
 df['Filenames'] = pd.Series(filenames)
 
+
 df.to_excel('C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Unlabeled audio/TRAIN/features_extracted.xlsx', index=False, header=True)
 
 df = pd.read_excel('C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Unlabeled audio/TRAIN/features_extracted.xlsx')
+
 print(df)
 
 df['Label'].groupby(df['Label']).count()
@@ -51,6 +55,7 @@ We know in advance that some Cough-Shallow audios have too short duration
 '''
 
 import soundfile as sf
+
 basepath = 'C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Labeled audio/Positives_audios/'
 
 original_len = len(os.listdir(basepath))
@@ -93,6 +98,7 @@ INNER JOIN OF BOTH TABLES
 '''
 
 metadata = pd.read_excel('C:/Users/Ian/Desktop/parlescatala/Roldo/Cough dataset/Labeled audio/metadata.xlsx')
+
 
 result = pd.merge(df,metadata,how='inner')
 result.to_excel(basepath+'features_extracted.xlsx')
