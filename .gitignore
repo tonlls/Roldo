@@ -3,3 +3,4 @@ Cough dataset/
 Cough_dataset/
 .idea/
 .vscode/
+__pycache__/
