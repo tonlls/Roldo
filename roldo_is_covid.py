@@ -25,7 +25,7 @@ def get_data(file):
 
 class Model:
 	def __init__(self,model=None):
-		# self.x_test,self.y_test=get_data(path+'features_extracted_t.json')
+		self.x_test,self.y_test=get_data(path+'features_covid_TEST.json')
 		self.x_train,self.y_train=get_data(path+'features_covid_TRAIN.json')
 		if model==None:
 			self.model=tf.keras.models.Sequential()
@@ -72,3 +72,4 @@ class Model:
 
 m=Model()
 m.train(20)
+m.get_stats()
