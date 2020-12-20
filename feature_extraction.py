@@ -8,12 +8,49 @@ from pyAudioAnalysis import MidTermFeatures as mF
 import numpy as np
 import pandas as pd
 import os
-import soundfile as sf
 basepath1 = 'D:/GitHub/Roldo/Cough dataset/'
 
 TYPE=['TRAIN','TEST']
+for t in TYPE:
+    basepath_train_cough = basepath1+'Unlabeled audio/'+t+'/Cough/'
+    basepath_train_nocough = basepath1+'Unlabeled audio/'+t+'/No_Cough/'
 
 
+    [mid_term_features_cough, wav_file_list_cough, mid_feature_names] =  mF.directory_feature_extraction(basepath_train_cough, 0.1,0.1, 0.01, 0.01, compute_beat=False)
+    [mid_term_features_nocough, wav_file_list_nocough, mid_feature_names] =  mF.directory_feature_extraction(basepath_train_nocough, 0.1,0.1, 0.01, 0.01, compute_beat=False)
+
+    label_nocough = np.zeros(np.shape(mid_term_features_nocough)[0])
+    label_cough = np.ones(np.shape(mid_term_features_cough)[0])
+
+    features = np.concatenate((mid_term_features_cough, mid_term_features_nocough))  # Equivalent to rbind() in R
+    labels = np.concatenate((label_cough, label_nocough))
+    mid_feature_names = np.array(mid_feature_names)
+
+    filenames_cough = []
+    for i in range(len(wav_file_list_cough)):
+        filenames_cough.append(os.path.split(os.path.abspath(wav_file_list_cough[i]))[1].split('.')[0])
+
+    filenames_nocough = []
+    for i in range(len(wav_file_list_nocough)):
+        filenames_nocough.append(os.path.split(os.path.abspath(wav_file_list_nocough[i]))[1].split('.')[0])
+
+    filenames = np.concatenate((filenames_cough, filenames_nocough))
+
+    df = pd.DataFrame(features, columns = mid_feature_names)
+    df['Label'] = pd.Series(labels)
+    df['Filenames'] = pd.Series(filenames)
+
+
+    df.to_excel(basepath1+'Unlabeled audio/'+t+'/features_extracted_'+t+'.xlsx', index=False, header=True)
+    df.to_json(basepath1+'Unlabeled audio/'+t+'/features_extracted_'+t+'.json')
+
+
+    '''
+    Let's extract the features from some Positive cough audios.
+    We know in advance that some Cough-Shallow audios have too short duration
+    '''
+
+import soundfile as sf
 for t in TYPE:
 
     #basepath2 = basepath1+'Labeled audio/'+t+'/'
@@ -47,17 +84,4 @@ for t in TYPE:
 
     df.to_excel(basepath1+'Labeled audio/'+t+'/features_extracted_'+t+'.xlsx', index=False, header=True)
     df.to_json(basepath1+'Labeled audio/'+t+'/features_extracted_'+t+'.json')
-
-
-    '''
-    INNER JOIN OF BOTH TABLES
-    '''
-
-    metadata = pd.read_excel(basepath1+'Labeled audio/metadata.xlsx')
-
-
-    result = pd.merge(df,metadata,how='inner')
-    result.to_excel(basepath2+'features_extracted.xlsx')
-
-    result.to_json(basepath2+'features_extracted.json')
     #---------------------------
